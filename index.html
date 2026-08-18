@@ -235,7 +235,7 @@
     </div>
   </div>
 
-<script>
+  <script>
     const SERVICE_DOMAIN = 'mirimiri-shop';
     const API_KEY = 'hZGcnsABvU5M2zUMwcZXv0qE7r40UZkCofmR';
 
@@ -266,10 +266,18 @@
           const card = document.createElement('div');
           card.className = 'product-card';
 
-          const imgUrl = (product.image && product.image.url) ? product.image.url : '';
-          const title = product.name || '商品';
+          // フィールド名が `image` または `img` のどちらでも受け取れるよう柔軟に対応
+          const imgObj = product.image || product.img;
+          const imgUrl = (imgObj && imgObj.url) ? imgObj.url : '';
+          
+          // タイトル（name / title）
+          const title = product.name || product.title || '商品';
+          
+          // 価格
           const priceText = product.price ? Number(product.price).toLocaleString() : '---';
-          const buyUrl = product.squareUrl || '#';
+          
+          // Square購入URL（squareUrl / buyUrl / url）
+          const buyUrl = product.squareUrl || product.buyUrl || product.url || '#';
 
           card.innerHTML = `
             ${imgUrl ? `<img src="${imgUrl}" alt="${title}" class="product-img">` : ''}
