@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>mirimiri shop | 枯れないお花の編み物ギフト</title>
   <style>
+    /* 全体スタイリング（シンプル＆モノトーン） */
     :root {
-      --primary-color: #e8a598;
-      --bg-color: #faf6f0;
+      --primary-color: #222222;
+      --bg-color: #f7f7f7;
       --card-bg: #ffffff;
-      --text-color: #5a4a42;
-      --sub-text: #8c7b70;
-      --line-color: #00c300;
+      --text-color: #333333;
+      --accent-color: #000000;
+      --border-color: #e0e0e0;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
     body {
@@ -31,204 +32,228 @@
     /* ヘッダー */
     header {
       text-align: center;
-      padding: 30px 20px 20px;
-      border-bottom: 2px dashed #e8c4bc;
+      padding: 35px 20px 20px;
+      background-color: var(--bg-color);
     }
 
-    header h1 {
+    h1 {
       font-size: 2.2rem;
       color: var(--primary-color);
-      letter-spacing: 2px;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      font-weight: bold;
+      letter-spacing: 0.05em;
     }
 
-    header p {
-      font-size: 0.9rem;
-      color: var(--sub-text);
+    .subtitle {
+      font-size: 0.85rem;
+      color: #777777;
+      letter-spacing: 0.05em;
     }
 
     /* メインコンテンツ */
-    .container {
+    container {
+      display: block;
       max-width: 500px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 0 16px;
     }
 
-    /* メインビジュアル */
+    /* イチオシ写真エリア */
     .hero-banner {
-      background-color: #f5e8dd;
-      border-radius: 20px;
-      height: 220px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--sub-text);
-      font-size: 1.1rem;
-      margin-bottom: 25px;
-      background-size: cover;
-      background-position: center;
+      width: 100%;
+      margin: 15px 0 25px;
+      border-radius: 16px;
+      overflow: hidden;
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-color);
     }
 
-    /* キャッチコピー */
-    .hero-text {
+    .hero-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .concept-text {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 30px;
     }
 
-    .hero-text h2 {
-      font-size: 1.3rem;
-      margin-bottom: 10px;
-      color: var(--text-color);
-    }
-
-    .hero-text p {
-      font-size: 0.85rem;
-      color: var(--sub-text);
-    }
-
-    /* セクションタイトル */
-    .section-title {
-      text-align: center;
+    .concept-text h2 {
       font-size: 1.1rem;
       color: var(--primary-color);
-      margin-bottom: 20px;
-      font-weight: bold;
+      margin-bottom: 8px;
     }
 
-    /* 横型商品カードリスト */
+    .concept-text p {
+      font-size: 0.85rem;
+      color: #666666;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.05rem;
+      color: var(--primary-color);
+      margin: 25px 0 15px;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+    }
+
+    /* 商品リスト */
     .product-list {
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      margin-bottom: 40px;
+      gap: 16px;
     }
 
     .product-card {
       background-color: var(--card-bg);
-      border-radius: 16px;
-      padding: 15px;
+      border-radius: 12px;
+      padding: 14px;
       display: flex;
       align-items: center;
-      gap: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      gap: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      border: 1px solid var(--border-color);
     }
 
-    .product-image {
-      width: 90px;
-      height: 90px;
-      border-radius: 12px;
+    .product-img {
+      width: 85px;
+      height: 85px;
       object-fit: cover;
-      background-color: #f5e8dd;
-      flex-shrink: 0;
+      border-radius: 8px;
+      background-color: #eee;
     }
 
     .product-info {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
+      flex: 1;
     }
 
     .product-title {
-      font-size: 1rem;
       font-weight: bold;
+      font-size: 0.95rem;
+      color: var(--primary-color);
+      margin-bottom: 4px;
     }
 
     .product-price {
-      font-size: 0.95rem;
-      color: var(--primary-color);
       font-weight: bold;
+      color: #111111;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
     }
 
-    .buy-button {
+    .product-price span {
+      font-size: 0.75rem;
+      color: #888888;
+      font-weight: normal;
+    }
+
+    .buy-btn {
       display: inline-block;
-      margin-top: 5px;
-      padding: 8px 16px;
-      background-color: var(--primary-color);
-      color: #fff;
+      background-color: var(--accent-color);
+      color: #ffffff;
       text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: bold;
-      font-size: 0.85rem;
-      border-radius: 20px;
-      text-align: center;
-      width: fit-content;
+      transition: opacity 0.2s;
     }
 
-    /* 公式つながりセクション */
+    .buy-btn:hover {
+      opacity: 0.8;
+    }
+
+    /* SNS・LINEセクション */
     .social-section {
+      margin-top: 35px;
       background-color: var(--card-bg);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      border-radius: 12px;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      border: 1px solid var(--border-color);
     }
 
     .social-box {
-      border: 1.5px dashed #f0cbb8;
-      background-color: #fff9f5;
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
+      background-color: #f9f9f9;
+      border: 1px dashed #ccc;
+      padding: 12px;
+      border-radius: 8px;
       font-size: 0.8rem;
-      color: var(--sub-text);
+      color: #444;
       margin-bottom: 15px;
     }
 
     .social-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
       width: 100%;
-      padding: 12px;
-      color: #fff;
+      padding: 10px 0;
+      border-radius: 6px;
+      color: white;
       text-decoration: none;
       font-weight: bold;
-      font-size: 0.9rem;
-      border-radius: 25px;
+      font-size: 0.85rem;
       margin-bottom: 10px;
     }
 
-    .line-btn { background-color: var(--line-color); }
-    .insta-btn { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .line-btn {
+      background-color: #333333;
+    }
 
-    #loading { text-align: center; padding: 20px; color: var(--sub-text); }
+    .insta-btn {
+      background-color: #555555;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 30px;
+      color: #888;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>mirimiri shop</h1>
-    <p>〜 ほっこり笑顔を届ける編み物フラワー 〜</p>
+    <h1>𝐦𝐢𝐫𝐢𝐦𝐢𝐫𝐢 𝐬𝐡𝐨𝐩</h1>
+    <div class="subtitle">〜 ほっこり笑顔を届ける編み物フラワー 〜</div>
   </header>
 
-  <div class="container">
-    <!-- メインビジュアル -->
-    <div class="hero-banner">🌸 [ここにイチオシ作品の写真]</div>
+  <container>
+    <!-- イチオシ写真エリア -->
+    <div class="hero-banner">
+      <!-- microCMS等に画像をUPした場合は、下のsrc="〜"にそのURLを入れて差し替えられます -->
+      <img src="https://images.microcms-assets.io/assets/placeholder.jpg" alt="イチオシ作品" id="hero-img">
+    </div>
 
-    <!-- キャッチコピー -->
-    <div class="hero-text">
+    <div class="concept-text">
       <h2>ずっとキレイな、手のひらのお花</h2>
       <p>ひとつひとつ心を込めて編み上げた<br>世界にひとつだけのハンドメイド作品をお届けします。</p>
     </div>
 
-    <!-- 商品一覧（microCMSから動的読み込み） -->
-    <div class="section-title">✨ 人気の作品</div>
-    <div id="loading">商品を読み込んでいます...</div>
+    <div class="section-title">✦ 人気の作品</div>
+
+    <div id="loading" class="loading">商品を読み込んでいます...</div>
     <div id="product-list" class="product-list"></div>
 
-    <!-- 公式つながり -->
-<div class="social-section">
-        <div class="section-title" style="margin-bottom: 10px;">🌱 mirimiri公式つながり</div>
-        <div class="social-box">
-          🎁 <strong>公式LINE登録でポイントゲット！</strong><br>
-          ショップカードでポイントを貯めて限定ノベルティをプレゼント中♪
-        </div>
-        <a href="https://line.me/R/ti/p/@447yyvtb" target="_blank" rel="noopener noreferrer" class="social-btn line-btn">💬 LINEでポイントカードを受け取る</a>
-        <a href="https://www.instagram.com/mirimiri_amiami?igsh=NTViZ292ZWo2cWx1" target="_blank" rel="noopener noreferrer" class="social-btn insta-btn">📷 Instagramで新作チェック</a>
+    <div class="social-section">
+      <div class="section-title" style="margin: 0 0 10px 0;">mirimiri公式つながり</div>
+      <div class="social-box">
+        🎁 <strong>公式LINE登録でポイントゲット！</strong><br>
+        ショップカードでポイントを貯めて限定ノベルティをプレゼント中♪
       </div>
+      <a href="https://line.me/R/ti/p/@447yyvtb" target="_blank" rel="noopener noreferrer" class="social-btn line-btn">LINEでポイントカードを受け取る</a>
+      <a href="https://www.instagram.com/mirimiri_amiami?igsh=NTViZ292ZWo2cWx1" target="_blank" rel="noopener noreferrer" class="social-btn insta-btn">Instagramで新作チェック</a>
+    </div>
+  </container>
 
   <script>
     const SERVICE_DOMAIN = 'mirimiri-shop';
-    const API_KEY = 'hZGcnsABvU5M2zUMwcZXV0qE7r40UZkCoFmR'; // ★ご自身のmicroCMS APIキーに書き換えてください
+    const API_KEY = 'hZGcnsABvU5M2zUMwcZXv0qE7r40UZkCofmR';
 
     async function fetchProducts() {
       const loadingEl = document.getElementById('loading');
@@ -236,7 +261,9 @@
 
       try {
         const response = await fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/products`, {
-          headers: { 'X-MICROCMS-API-KEY': API_KEY }
+          headers: {
+            'X-MICROCMS-API-KEY': API_KEY
+          }
         });
 
         if (!response.ok) throw new Error('データ取得失敗');
@@ -244,32 +271,33 @@
         const data = await response.json();
         loadingEl.style.display = 'none';
 
+        if (data.contents.length === 0) {
+          containerEl.innerHTML = '<p style="text-align:center;">商品がありません。</p>';
+          return;
+        }
+
         data.contents.forEach(product => {
           const card = document.createElement('div');
           card.className = 'product-card';
 
-          const imageUrl = product.image ? product.image.url : '';
-          const squareUrl = product.square_url || '#';
-          
-          // 価格のエラー防止処理
-          const priceNum = Number(product.price);
-          const formattedPrice = isNaN(priceNum) ? product.price : priceNum.toLocaleString();
+          const imgUrl = product.image ? product.image.url : 'https://via.placeholder.com/85';
+          const priceText = product.price ? Number(product.price).toLocaleString() : '---';
+          const buyUrl = product.squareUrl || '#';
 
           card.innerHTML = `
-            <img class="product-image" src="${imageUrl}" alt="${product.name}">
+            <img src="${imgUrl}" alt="${product.name}" class="product-img">
             <div class="product-info">
               <div class="product-title">${product.name}</div>
-              <div class="product-price">¥${formattedPrice} <span style="font-size: 0.75rem; color: #8c7b70; font-weight: normal;">(税込)</span></div>
-              <a href="${squareUrl}" class="buy-button" target="_blank" rel="noopener noreferrer">Squareで購入</a>
+              <div class="product-price">¥${priceText} <span>(税込)</span></div>
+              <a href="${buyUrl}" target="_blank" rel="noopener noreferrer" class="buy-btn">Squareで購入</a>
             </div>
           `;
-
           containerEl.appendChild(card);
         });
 
       } catch (error) {
-        console.error('Error:', error);
-        loadingEl.innerText = '商品の読み込みに失敗しました。';
+        console.error(error);
+        loadingEl.textContent = '商品の読み込みに失敗しました。';
       }
     }
 
