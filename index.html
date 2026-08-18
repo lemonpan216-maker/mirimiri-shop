@@ -251,57 +251,58 @@
     </div>
   </container>
 
-  <script>
-    const SERVICE_DOMAIN = 'mirimiri-shop';
-    const API_KEY = 'hZGcnsABvU5M2zUMwcZXv0qE7r40UZkCofmR';
+<script>
+  const SERVICE_DOMAIN = 'mirimiri-shop';
+  const API_KEY = 'hZGcnsABvU5M2zUMwcZXv0qE7r40UZkCofmR';
 
-    async function fetchProducts() {
-      const loadingEl = document.getElementById('loading');
-      const containerEl = document.getElementById('product-list');
+  async function fetchProducts() {
+    const loadingEl = document.getElementById('loading');
+    const containerEl = document.getElementById('product-list');
 
-      try {
-        const response = await fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/products`, {
-          headers: {
-            'X-MICROCMS-API-KEY': API_KEY
-          }
-        });
-
-        if (!response.ok) throw new Error('データ取得失敗');
-
-        const data = await response.json();
-        loadingEl.style.display = 'none';
-
-        if (data.contents.length === 0) {
-          containerEl.innerHTML = '<p style="text-align:center;">商品がありません。</p>';
-          return;
+    try {
+      const response = await fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/products`, {
+        headers: {
+          'X-MICROCMS-API-KEY': API_KEY
         }
+      });
 
-        data.contents.forEach(product => {
-          const card = document.createElement('div');
-          card.className = 'product-card';
-
-          const imgUrl = product.image ? product.image.url : 'https://via.placeholder.com/85';
-          const priceText = product.price ? Number(product.price).toLocaleString() : '---';
-          const buyUrl = product.squareUrl || '#';
-
-          card.innerHTML = `
-            <img src="${imgUrl}" alt="${product.name}" class="product-img">
-            <div class="product-info">
-              <div class="product-title">${product.name}</div>
-              <div class="product-price">¥${priceText} <span>(税込)</span></div>
-              <a href="${buyUrl}" target="_blank" rel="noopener noreferrer" class="buy-btn">Squareで購入</a>
-            </div>
-          `;
-          containerEl.appendChild(card);
-        });
-
-      } catch (error) {
-        console.error(error);
-        loadingEl.textContent = '商品の読み込みに失敗しました。';
+      if (!response.ok) {
+        throw new Error('HTTPエラー: ' + response.status);
       }
-    }
 
-    fetchProducts();
-  </script>
-</body>
-</html>
+      const data = await response.json();
+      loadingEl.style.display = 'none';
+
+      if (!data.contents || data.contents.length === 0) {
+        containerEl.innerHTML = '<p style="text-align:center; color:#888;">現在表示できる商品がありません。</p>';
+        return;
+      }
+
+      data.contents.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        // microCMSのフィールド名に合わせて画像と価格を取得
+        const imgUrl = (product.image && product.image.url) ? product.image.url : 'https://via.placeholder.com/85';
+        const priceText = product.price ? Number(product.price).toLocaleString() : '---';
+        const buyUrl = product.squareUrl || '#';
+
+        card.innerHTML = `
+          <img src="${imgUrl}" alt="${product.name || '商品'}" class="product-img">
+          <div class="product-info">
+            <div class="product-title">${product.name || '名称未設定'}</div>
+            <div class="product-price">¥${priceText} <span>(税込)</span></div>
+            <a href="${buyUrl}" target="_blank" rel="noopener noreferrer" class="buy-btn">Squareで購入</a>
+          </div>
+        `;
+        containerEl.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error('取得失敗:', error);
+      loadingEl.textContent = '商品の読み込みに失敗しました。';
+    }
+  }
+
+  fetchProducts();
+</script>
