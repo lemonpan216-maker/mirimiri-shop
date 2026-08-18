@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>mirimiri shop | 枯れないお花の編み物ギフト</title>
   <style>
-    /* 全体スタイリング（シンプル＆モノトーン） */
+    /* 全体スタイリング（モノトーン） */
     :root {
       --primary-color: #222222;
       --bg-color: #f7f7f7;
@@ -29,7 +29,6 @@
       padding-bottom: 40px;
     }
 
-    /* ヘッダー */
     header {
       text-align: center;
       padding: 35px 20px 20px;
@@ -50,15 +49,13 @@
       letter-spacing: 0.05em;
     }
 
-    /* メインコンテンツ */
-    container {
+    .container {
       display: block;
       max-width: 500px;
       margin: 0 auto;
       padding: 0 16px;
     }
 
-    /* イチオシ写真エリア */
     .hero-banner {
       width: 100%;
       margin: 15px 0 25px;
@@ -101,7 +98,6 @@
       letter-spacing: 0.03em;
     }
 
-    /* 商品リスト */
     .product-list {
       display: flex;
       flex-direction: column;
@@ -163,11 +159,6 @@
       transition: opacity 0.2s;
     }
 
-    .buy-btn:hover {
-      opacity: 0.8;
-    }
-
-    /* SNS・LINEセクション */
     .social-section {
       margin-top: 35px;
       background-color: var(--card-bg);
@@ -200,13 +191,8 @@
       margin-bottom: 10px;
     }
 
-    .line-btn {
-      background-color: #333333;
-    }
-
-    .insta-btn {
-      background-color: #555555;
-    }
+    .line-btn { background-color: #333333; }
+    .insta-btn { background-color: #555555; }
 
     .loading {
       text-align: center;
@@ -223,10 +209,8 @@
     <div class="subtitle">〜 ほっこり笑顔を届ける編み物フラワー 〜</div>
   </header>
 
-  <container>
-    <!-- イチオシ写真エリア -->
+  <div class="container">
     <div class="hero-banner">
-      <!-- microCMS等に画像をUPした場合は、下のsrc="〜"にそのURLを入れて差し替えられます -->
       <img src="https://images.microcms-assets.io/assets/placeholder.jpg" alt="イチオシ作品" id="hero-img">
     </div>
 
@@ -249,60 +233,66 @@
       <a href="https://line.me/R/ti/p/@447yyvtb" target="_blank" rel="noopener noreferrer" class="social-btn line-btn">LINEでポイントカードを受け取る</a>
       <a href="https://www.instagram.com/mirimiri_amiami?igsh=NTViZ292ZWo2cWx1" target="_blank" rel="noopener noreferrer" class="social-btn insta-btn">Instagramで新作チェック</a>
     </div>
-  </container>
+  </div>
 
-<script>
-  const SERVICE_DOMAIN = 'mirimiri-shop';
-  const API_KEY = 'hZGcnsABvU5M2zUMwcZXv0qE7r40UZkCofmR';
+  <script>
+    const SERVICE_DOMAIN = 'mirimiri-shop';
+    const API_KEY = 'hZGcnsABvU5M2zUMwcZXv0qE7r40UZkCofmR';
+    // 試行するエンドポイントのリスト（複数候補を順番に試します）
+    const ENDPOINTS = ['products', 'product', 'items', 'item'];
 
-  async function fetchProducts() {
-    const loadingEl = document.getElementById('loading');
-    const containerEl = document.getElementById('product-list');
+    async function fetchProducts() {
+      const loadingEl = document.getElementById('loading');
+      const containerEl = document.getElementById('product-list');
 
-    try {
-      const response = await fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/products`, {
-        headers: {
-          'X-MICROCMS-API-KEY': API_KEY
+      let contents = null;
+
+      for (const endpoint of ENDPOINTS) {
+        try {
+          const res = await fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/${endpoint}`, {
+            headers: { 'X-MICROCMS-API-KEY': API_KEY }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.contents) {
+              contents = data.contents;
+              break;
+            }
+          }
+        } catch (e) {
+          console.log(`Endpoint ${endpoint} failed:`, e);
         }
-      });
-
-      if (!response.ok) {
-        throw new Error('HTTPエラー: ' + response.status);
       }
 
-      const data = await response.json();
       loadingEl.style.display = 'none';
 
-      if (!data.contents || data.contents.length === 0) {
-        containerEl.innerHTML = '<p style="text-align:center; color:#888;">現在表示できる商品がありません。</p>';
+      if (!contents || contents.length === 0) {
+        containerEl.innerHTML = '<p style="text-align:center; color:#888;">商品データが見つかりませんでした。</p>';
         return;
       }
 
-      data.contents.forEach(product => {
+      contents.forEach(product => {
         const card = document.createElement('div');
         card.className = 'product-card';
 
-        // microCMSのフィールド名に合わせて画像と価格を取得
-        const imgUrl = (product.image && product.image.url) ? product.image.url : 'https://via.placeholder.com/85';
+        const imgUrl = (product.image && product.image.url) ? product.image.url : (product.img ? product.img.url : '');
+        const title = product.name || product.title || '作品';
         const priceText = product.price ? Number(product.price).toLocaleString() : '---';
-        const buyUrl = product.squareUrl || '#';
+        const buyUrl = product.squareUrl || product.url || '#';
 
         card.innerHTML = `
-          <img src="${imgUrl}" alt="${product.name || '商品'}" class="product-img">
+          ${imgUrl ? `<img src="${imgUrl}" alt="${title}" class="product-img">` : ''}
           <div class="product-info">
-            <div class="product-title">${product.name || '名称未設定'}</div>
+            <div class="product-title">${title}</div>
             <div class="product-price">¥${priceText} <span>(税込)</span></div>
             <a href="${buyUrl}" target="_blank" rel="noopener noreferrer" class="buy-btn">Squareで購入</a>
           </div>
         `;
         containerEl.appendChild(card);
       });
-
-    } catch (error) {
-      console.error('取得失敗:', error);
-      loadingEl.textContent = '商品の読み込みに失敗しました。';
     }
-  }
 
-  fetchProducts();
-</script>
+    fetchProducts();
+  </script>
+</body>
+</html>
